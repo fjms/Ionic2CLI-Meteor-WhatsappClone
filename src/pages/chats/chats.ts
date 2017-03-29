@@ -1,7 +1,8 @@
+import { ChatsOptionsComponent } from './../chats-options/chats-options';
 import { MessagesPage } from './../messages/messages';
 import { Chats, Messages } from './../../../api/server/collections';
 import { Chat } from 'api/models';
-import { NavController } from 'ionic-angular';
+import { NavController, PopoverController } from 'ionic-angular';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,7 +14,15 @@ export class ChatsPage implements OnInit {
 
   chats;
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private popoverCtrl: PopoverController) {
+  }
+
+  showOptions(): void {
+    const popover = this.popoverCtrl.create(ChatsOptionsComponent, {}, {
+      cssClass: 'options-popover chats-options-popover'
+    });
+
+    popover.present();
   }
 
   ngOnInit(): void {
@@ -33,7 +42,7 @@ export class ChatsPage implements OnInit {
         )
       ).zone();
   }
-  
+
   showMessages(chat): void {
     this.navCtrl.push(MessagesPage, { chat });
   }
