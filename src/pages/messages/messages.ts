@@ -5,6 +5,7 @@ import { NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as moment from 'moment';
 import { _ } from 'meteor/underscore';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'page-messages',
@@ -16,7 +17,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   title: string;
   picture: string;
   messagesDayGroups;
-  messages;
+  messages:Observable<Message[]>;
   message: string = '';
   autoScroller: MutationObserver;
   scrollOffset = 0;

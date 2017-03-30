@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class ChatsPage implements OnInit {
 
-  chats;
+  chats:Observable<Chat[]>;
 
   constructor(private navCtrl: NavController, private popoverCtrl: PopoverController) {
   }

@@ -14,7 +14,8 @@
     "paths": {
       "api/*": [
         "./api/server/*"
-      ]
+      ],
+      "rxjs": ["node_modules/rxjs"]
     },
     "sourceMap": true,
     "target": "es5",
