@@ -1,3 +1,4 @@
+import { NewChatPage } from './../pages/new-chat/new-chat';
 import { ChatsOptionsComponent } from './../pages/chats-options/chats-options';
 import { ProfilePage } from './../pages/profile/profile';
 import { LoginPage } from './../pages/login/login';
@@ -22,7 +23,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginPage,
     VerificationPage,
     ProfilePage,
-    ChatsOptionsComponent
+    ChatsOptionsComponent,
+    NewChatPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -36,7 +38,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginPage,
     VerificationPage,
     ProfilePage,
-    ChatsOptionsComponent
+    ChatsOptionsComponent,
+    NewChatPage
   ],
   providers: [
     PhoneService,

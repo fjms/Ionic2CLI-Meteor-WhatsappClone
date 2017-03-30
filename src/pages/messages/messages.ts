@@ -5,7 +5,7 @@ import { NavParams } from 'ionic-angular';
 import { MeteorObservable } from 'meteor-rxjs';
 import * as moment from 'moment';
 import { _ } from 'meteor/underscore';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'page-messages',
