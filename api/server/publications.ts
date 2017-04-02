@@ -3,23 +3,35 @@ import { Messages } from './collections/messages';
 import { User, Message, Chat } from './models';
 import { Users } from './collections/users';
 
-Meteor.publish('users', function (): Mongo.Cursor<User> {
+Meteor.publishComposite('users', function (
+    pattern: string
+): PublishCompositeConfig<User> {
     if (!this.userId) {
         return;
     }
-    return Users.collection.find({}, {
-        fields: {
-            profile: 1
+    let selector = {};
+    if (pattern) {
+        selector = {
+            'profile.name': { $regex: pattern, $options: 'i' }
+        };
+    }
+    return {
+        find: () => {
+            return Users.collection.find(selector, {
+                fields: { profile: 1 },
+                limit: 15
+            });
         }
-    });
+    };
 });
 
-Meteor.publish('messages', function (chatId: string): Mongo.Cursor<Message> {
+Meteor.publish('messages', function (chatId: string, messagesBatchCounter: number): Mongo.Cursor<Message> {
     if (!this.userId || !chatId) {
         return;
     }
     return Messages.collection.find({ chatId }, {
-        sort: { createdAt: -1 }
+        sort: { createdAt: -1 },
+        limit: 30 * messagesBatchCounter
     });
 });
 
