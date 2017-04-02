@@ -18,7 +18,7 @@ Meteor.methods({
         }
 
         check(receiverId, nonEmptyString);
-        
+
         if (receiverId === this.userId) {
             throw new Meteor.Error('illegal-receiver',
                 'Receiver must be different than the current logged in user');
@@ -38,6 +38,19 @@ Meteor.methods({
         };
 
         Chats.insert(chat);
+    },
+    removeChat(chatId: string): void {
+        if (!this.userId) {
+            throw new Meteor.Error('unauthorized',
+                'User must be logged-in to remove chat');
+        }
+        check(chatId, nonEmptyString);
+        const chatExists = !!Chats.collection.find(chatId).count();
+        if (!chatExists) {
+            throw new Meteor.Error('chat-not-exists',
+                'Chat doesn\'t exist');
+        }
+        Chats.remove(chatId);
     },
     updateProfile(profile: Profile): void {
         if (!this.userId) throw new Meteor.Error('unauthorized',

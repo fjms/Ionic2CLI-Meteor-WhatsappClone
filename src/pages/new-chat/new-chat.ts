@@ -41,10 +41,15 @@ export class NewChatPage {
   }
 
   loadUsers(): void {
-    this.users = this.findUsers();
+    // Fetch all users matching search pattern
+    const subscription = MeteorObservable.subscribe('users');
+    const autorun = MeteorObservable.autorun();
+    Observable.merge(subscription, autorun).subscribe(() => {
+      this.users = this.findUsers();
+    });
   }
 
-  findUsers():Observable<User[]> {
+  findUsers(): Observable<User[]> {
     // Find all belonging chats
     return Chats.find({
       memberIds: this.senderId
