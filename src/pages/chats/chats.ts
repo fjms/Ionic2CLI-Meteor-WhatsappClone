@@ -20,6 +20,7 @@ export class ChatsPage implements OnInit {
   constructor(private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController) {
+    this.senderId = Meteor.userId();
   }
 
   addChat(): void {
@@ -39,35 +40,35 @@ export class ChatsPage implements OnInit {
     this.chats = this.findChats();
   }
 
-    findChats(): Observable<Chat[]> {
+  findChats(): Observable<Chat[]> {
     // Find chats and transform them
     return Chats.find().map(chats => {
       chats.forEach(chat => {
         chat.title = '';
         chat.picture = '';
- 
+
         const receiverId = chat.memberIds.find(memberId => memberId !== this.senderId);
         const receiver = Users.findOne(receiverId);
- 
+
         if (receiver) {
           chat.title = receiver.profile.name;
           chat.picture = receiver.profile.picture;
         }
- 
+
         // This will make the last message reactive
         this.findLastChatMessage(chat._id).subscribe((message) => {
           chat.lastMessage = message;
         });
       });
- 
+
       return chats;
     });
   }
 
-    findLastChatMessage(chatId: string): Observable<Message> {
+  findLastChatMessage(chatId: string): Observable<Message> {
     return Observable.create((observer: Subscriber<Message>) => {
       const chatExists = () => !!Chats.findOne(chatId);
- 
+
       // Re-compute until chat is removed
       MeteorObservable.autorun().takeWhile(chatExists).subscribe(() => {
         Messages.find({ chatId }, {
@@ -78,7 +79,7 @@ export class ChatsPage implements OnInit {
             if (!messages.length) {
               return;
             }
- 
+
             const lastMessage = messages[0];
             observer.next(lastMessage);
           },
